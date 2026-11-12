@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Login | Coffee Ex Machina</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .admin-login-page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            background: #17110e;
+        }
+
+        .admin-login-card {
+            width: 100%;
+            max-width: 430px;
+            padding: 40px;
+            background: #241b16;
+            border: 1px solid #d6b77a;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0,0,0,.4);
+        }
+
+        .admin-logo {
+            text-align: center;
+            color: #d6b77a;
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .admin-login-card h1 {
+            color: #f5e9d5;
+            text-align: center;
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        .admin-subtitle {
+            color: #b9a993;
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .admin-login-card label {
+            display: block;
+            color: #f5e9d5;
+            margin: 15px 0 8px;
+        }
+
+        .admin-login-card input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px;
+            background: #17110e;
+            color: #f5e9d5;
+            border: 1px solid rgba(214,183,122,.4);
+            border-radius: 7px;
+            outline: none;
+        }
+
+        .admin-login-card input:focus {
+            border-color: #d6b77a;
+        }
+
+        .admin-login-button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 25px;
+            background: linear-gradient(135deg,#f4d28b,#d6a94f);
+            color: #1a120d;
+            border: 2px solid #ffe3a6;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .3s ease;
+        }
+
+        .admin-login-button:hover {
+            background: #fff0c8;
+            transform: translateY(-2px);
+        }
+
+        .admin-login-footer {
+            text-align: center;
+            color: #b9a993;
+            font-size: 12px;
+            margin-top: 25px;
+        }
+
+        .admin-back-link {
+            display: block;
+            text-align: center;
+            color: #d6b77a;
+            margin-top: 20px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="admin-login-page">
+
+        <section class="admin-login-card">
+
+            <div class="admin-logo">⚙</div>
+
+            <h1>COFFEE EX MACHINA</h1>
+
+            <p class="admin-subtitle">
+                STAFF MANAGEMENT PORTAL
+            </p>
+
+            <form id="adminLoginForm">
+
+                <label for="staffUsername">Username</label>
+                <input
+                    type="text"
+                    id="staffUsername"
+                    placeholder="Enter staff username"
+                    required>
+
+                <label for="staffPassword">Password</label>
+                <input
+                    type="password"
+                    id="staffPassword"
+                    placeholder="Enter your password"
+                    required>
+
+                <button type="submit" class="admin-login-button">
+                    SIGN IN
+                </button>
+
+            </form>
+
+            <a href="../index.html" class="admin-back-link">
+                ← Back to Main Website
+            </a>
+
+            <p class="admin-login-footer">
+                © 2026 Coffee Ex Machina
+                <br>
+                Authorized Staff Only
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <script>
+document.getElementById("adminLoginForm").addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const username = document.getElementById("staffUsername").value.trim();
+    const password = document.getElementById("staffPassword").value;
+
+    // DEMONSTRATION STAFF ACCOUNT
+    const correctUsername = "cemstaff";
+    const correctPassword = "CEM2026";
+
+    if (username === correctUsername && password === correctPassword) {
+
+        sessionStorage.setItem("cemStaffLoggedIn", "true");
+
+        alert("Welcome to Coffee Ex Machina Staff Portal!");
+
+        window.location.href = "dashboard.html";
+
+    } else {
+
+        alert("Incorrect username or password. Please try again.");
+
+    }
+
+});
+</script>
+
+</body>
+</html>

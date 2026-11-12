@@ -1,0 +1,773 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Management | Coffee Ex Machina</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .product-admin {
+            min-height: 100vh;
+            padding: 35px;
+            background: #17110e;
+            color: #f5e9d5;
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .product-header h1 {
+            color: #f5e9d5;
+        }
+
+        .back-dashboard {
+            color: #d6b77a;
+            text-decoration: none;
+        }
+
+        .product-section {
+            background: #241b16;
+            border: 1px solid rgba(214,183,122,.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .product-section h2 {
+            color: #d6b77a;
+            margin-bottom: 20px;
+        }
+
+        .product-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .product-form label {
+            display: block;
+            margin-bottom: 7px;
+            color: #f5e9d5;
+        }
+
+        .product-form input,
+        .product-form select,
+        .product-form textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            background: #17110e;
+            color: #f5e9d5;
+            border: 1px solid rgba(214,183,122,.4);
+            border-radius: 7px;
+        }
+
+        .product-form textarea {
+            resize: vertical;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .admin-primary-btn {
+            padding: 13px 20px;
+            background: #d6b77a;
+            color: #1a120d;
+            border: none;
+            border-radius: 7px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .admin-primary-btn:hover {
+            background: #f5e9d5;
+        }
+
+        .admin-secondary-btn {
+            padding: 11px 16px;
+            background: transparent;
+            color: #d6b77a;
+            border: 1px solid #d6b77a;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .admin-product-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .admin-product-card {
+            overflow: hidden;
+            background: #17110e;
+            border: 1px solid rgba(214,183,122,.3);
+            border-radius: 10px;
+        }
+
+        .admin-product-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background: #302219;
+        }
+
+        .admin-product-info {
+            padding: 15px;
+        }
+
+        .admin-product-info h3 {
+            color: #f5e9d5;
+            margin-bottom: 7px;
+        }
+
+        .admin-product-info p {
+            color: #b9a993;
+            font-size: 13px;
+            margin-bottom: 9px;
+        }
+
+        .admin-product-price {
+            color: #d6b77a;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .product-status {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .status-available {
+            background: #24462f;
+            color: #a9e2b8;
+        }
+
+        .status-soldout {
+            background: #512c27;
+            color: #f2aaa0;
+        }
+
+        .product-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .product-actions button {
+            flex: 1;
+            padding: 9px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .edit-product {
+            background: #d6b77a;
+            color: #1a120d;
+            border: none;
+        }
+
+        .availability-product {
+            background: transparent;
+            border: 1px solid #d6b77a;
+            color: #d6b77a;
+        }
+
+        .delete-product {
+            background: transparent;
+            border: 1px solid #d98c80;
+            color: #d98c80;
+        }
+
+        .product-counter {
+            color: #b9a993;
+            margin-bottom: 18px;
+        }
+
+        .empty-products {
+            color: #b9a993;
+            text-align: center;
+            padding: 30px;
+        }
+
+        @media (max-width: 850px) {
+            .admin-product-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .product-admin {
+                padding: 18px;
+            }
+
+            .product-form,
+            .admin-product-list {
+                grid-template-columns: 1fr;
+            }
+
+            .product-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<main class="product-admin">
+
+    <!-- PAGE HEADER -->
+    <header class="product-header">
+        <div>
+            <p style="color:#d6b77a;">COFFEE EX MACHINA / STAFF PORTAL</p>
+            <h1>Menu Management</h1>
+            <p style="color:#b9a993;">
+                Add, edit, and manage café products.
+            </p>
+        </div>
+
+        <a href="dashboard.html" class="back-dashboard">
+            ← Back to Dashboard
+        </a>
+    </header>
+
+
+    <!-- ADD / EDIT PRODUCT FORM -->
+    <section class="product-section">
+
+        <h2 id="formTitle">+ Add New Product</h2>
+
+        <form id="productForm" class="product-form">
+
+            <input type="hidden" id="productId">
+
+            <div>
+                <label for="productName">Product Name</label>
+                <input
+                    type="text"
+                    id="productName"
+                    placeholder="Enter product name"
+                    required>
+            </div>
+
+            <div>
+                <label for="productPrice">Price (₱)</label>
+                <input
+                    type="number"
+                    id="productPrice"
+                    min="0.01"
+                    step="0.01"
+                    placeholder="Enter price"
+                    required>
+            </div>
+
+            <div>
+                <label for="productCategory">Category</label>
+                <select id="productCategory" required>
+                    <option value="">Select category</option>
+                    <option>Espresso</option>
+                    <option>Non-Caffeine</option>
+                    <option>Signature Drinks</option>
+                    <option>Oreo Series</option>
+                    <option>Frappuccino</option>
+                    <option>Cream Base</option>
+                    <option>Pica-Pica</option>
+                    <option>Add-ons</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="productImage">Image Path</label>
+                <input
+                    type="text"
+                    id="productImage"
+                    placeholder="images/product-name.jpg">
+            </div>
+
+            <div class="full-width">
+                <label for="productDescription">Description</label>
+                <textarea
+                    id="productDescription"
+                    rows="3"
+                    placeholder="Enter product description"
+                    required></textarea>
+            </div>
+
+            <div class="full-width">
+                <button type="submit" class="admin-primary-btn"
+                        id="saveProductBtn">
+                    Save Product
+                </button>
+
+                <button type="button"
+                        class="admin-secondary-btn"
+                        id="cancelEditBtn"
+                        hidden>
+                    Cancel Edit
+                </button>
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- PRODUCT LIST -->
+    <section class="product-section">
+
+        <h2>Existing Products</h2>
+
+        <p class="product-counter" id="productCounter">
+            0 products
+        </p>
+
+        <div id="productList" class="admin-product-list">
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+
+// =================================
+// 1. COMPLETE COFFEE EX MACHINA MENU
+// =================================
+
+function makeProduct(id, name, price, category, image, description) {
+    return {
+        id,
+        name,
+        price,
+        category,
+        image: image ? "images/" + image : "",
+        description,
+        available: true
+    };
+}
+
+const startingProducts = [
+
+    // ESPRESSO
+    makeProduct(1, "Spanish Latte", 100, "Espresso", "spanish-latte.jpg", "A smooth and creamy espresso-based favorite."),
+    makeProduct(2, "White Mocha", 100, "Espresso", "latte.jpg", "A creamy coffee drink with a sweet mocha flavor."),
+    makeProduct(3, "Caramel Macchiato", 100, "Espresso", "caramel-macchiato.jpg", "Espresso with a smooth caramel flavor."),
+    makeProduct(4, "French Vanilla Latte", 115, "Espresso", "latte.jpg", "A smooth latte with a vanilla flavor."),
+    makeProduct(5, "Cafe Mocha", 100, "Espresso", "cafe-mocha.jpg", "A rich coffee drink with chocolate flavor."),
+    makeProduct(6, "Americano", 100, "Espresso", "americano.jpg", "Rich espresso balanced with water."),
+
+    // NON-CAFFEINE
+    makeProduct(7, "Chocolate Drink", 100, "Non-Caffeine", "chocolate-milk.jpg", "A sweet and chocolatey drink."),
+    makeProduct(8, "Matcha Latte", 100, "Non-Caffeine", "matcha-latte.jpg", "A creamy matcha-inspired beverage."),
+    makeProduct(9, "Strawberry Milk Drink", 100, "Non-Caffeine", "strawberry-milk.jpg", "A refreshing strawberry-flavored drink."),
+
+    // SIGNATURE DRINKS
+    makeProduct(10, "Almond Latte", 115, "Signature Drinks", "latte.jpg", "A smooth latte with an almond flavor."),
+    makeProduct(11, "Almond Mocha", 115, "Signature Drinks", "cafe-mocha.jpg", "A chocolate coffee drink with almond flavor."),
+    makeProduct(12, "Johnny's on the Rocks", 135, "Signature Drinks", "americano.jpg", "A refreshing iced signature coffee."),
+    makeProduct(13, "Caramel Coffee Jelly", 130, "Signature Drinks", "caramel-macchiato.jpg", "A coffee specialty with caramel flavor."),
+    makeProduct(14, "Marble Macchiato", 115, "Signature Drinks", "caramel-macchiato.jpg", "A layered coffee specialty."),
+    makeProduct(15, "Salted Caramel", 115, "Signature Drinks", "caramel-frappe.jpg", "A sweet caramel drink with a hint of salt."),
+
+    // OREO SERIES
+    makeProduct(16, "Double Chocolate Oreo", 135, "Oreo Series", "chocolate-frappe.jpg", "A chocolate Oreo blended beverage."),
+    makeProduct(17, "Matcha Oreo", 135, "Oreo Series", "matcha-latte.jpg", "A matcha-inspired Oreo blended drink."),
+    makeProduct(18, "Oh-Berry Oreo", 135, "Oreo Series", "strawberry-milk.jpg", "A refreshing berry-inspired Oreo drink."),
+
+    // FRAPPUCCINO
+    makeProduct(19, "Carmelita Frappuccino", 135, "Frappuccino", "caramel-frappe.jpg", "A creamy caramel blended beverage."),
+    makeProduct(20, "Java Chips Frappuccino", 135, "Frappuccino", "java-chips-frappuccino.jpg", "A blended coffee drink with chocolate chips."),
+    makeProduct(21, "Coffee Jelly Frappuccino", 160, "Frappuccino", "coffee-jelly.jpg", "A blended coffee treat with coffee jelly."),
+    makeProduct(22, "Triple Dark Chocolate", 150, "Frappuccino", "chocolate-frappe.jpg", "A rich chocolate blended beverage."),
+    makeProduct(23, "White Mocha Frappe", 135, "Frappuccino", "latte.jpg", "A creamy white mocha blended drink."),
+    makeProduct(24, "Salted Caramel Frappe", 145, "Frappuccino", "caramel-frappe.jpg", "A caramel blended drink with a hint of salt."),
+    makeProduct(25, "Almond Mocha Frappe", 145, "Frappuccino", "cafe-mocha.jpg", "A blended mocha with almond flavor."),
+
+    // CREAM BASE
+    makeProduct(26, "Chocolate Cream Frappe", 130, "Cream Base", "chocolate-frappe.jpg", "A rich and creamy chocolate blended drink."),
+    makeProduct(27, "Chocolate Chip Cream", 135, "Cream Base", "chocolate-chip-cream.jpg", "A smooth chocolate cream drink with chocolate chips."),
+    makeProduct(28, "Green Tea Cream Frappe", 130, "Cream Base", "matcha-latte.jpg", "A creamy blended green tea drink."),
+    makeProduct(29, "Strawberry Cream Frappe", 130, "Cream Base", "strawberry-milk.jpg", "A refreshing strawberry cream treat."),
+
+    // PICA-PICA
+    makeProduct(30, "Full Tank Nachos", 150, "Pica-Pica", "full-tank-nachos.jpg", "Crispy nachos loaded with delicious toppings."),
+    makeProduct(31, "Loaded Beef Fries", 145, "Pica-Pica", "loaded-beef-fries.jpg", "Crispy fries topped with savory beef."),
+    makeProduct(32, "Chicken and Fries", 145, "Pica-Pica", "chicken-and-fries.jpg", "A satisfying combination of crispy chicken and fries."),
+    makeProduct(33, "Chicken Moza Pops", 145, "Pica-Pica", "chicken-mozz-pops.jpg", "Bite-sized chicken and cheesy mozzarella snacks."),
+    makeProduct(34, "Flavored Fries", 90, "Pica-Pica", "flavored-fries.jpg", "Crispy golden fries with your favorite flavor."),
+
+    // ADD-ONS
+    makeProduct(35, "Espresso Shot", 20, "Add-ons", "espresso-shot.jpg", "Add an extra kick of rich coffee flavor."),
+    makeProduct(36, "Syrup/Sauce", 20, "Add-ons", "syrup-sauce.jpg", "Add extra sweetness and flavor."),
+    makeProduct(37, "Whip Cream", 30, "Add-ons", "whipped-cream.jpg", "A light and creamy topping."),
+    makeProduct(38, "Coffee Jelly", 30, "Add-ons", "coffee-jelly.jpg", "Add chewy coffee jelly for extra texture."),
+    makeProduct(39, "Cold Foam", 30, "Add-ons", "cold-foam.jpg", "A smooth and velvety topping."),
+    makeProduct(40, "Choco Chips", 30, "Add-ons", "choco-chips.jpg", "Add a delicious chocolate crunch."),
+    makeProduct(41, "Crushed Oreo", 30, "Add-ons", "choco-chips.jpg", "Crushed Oreo topping."),
+    makeProduct(42, "Caramel Bar", null, "Add-ons", "caramel-frappe.jpg", "Additional caramel topping. Price needs confirmation."),
+    makeProduct(43, "Oat Milk", 50, "Add-ons", "latte.jpg", "An alternative milk option.")
+
+];
+
+
+// =================================
+// 2. LOAD AND MERGE PRODUCTS
+// =================================
+
+let products = [];
+
+try {
+    const savedProducts = localStorage.getItem("cemProducts");
+
+    products = savedProducts
+        ? JSON.parse(savedProducts)
+        : [];
+
+    if (!Array.isArray(products)) {
+        products = [];
+    }
+
+} catch (error) {
+    products = [];
+}
+
+// Normalize older image paths
+products.forEach(function(product) {
+    if (typeof product.image === "string") {
+        product.image = product.image.replace(/^(\.\.\/)+/, "");
+    }
+});
+
+// Add all missing starter products without
+// overwriting products already edited by staff.
+const catalogVersion = "cem-full-menu-v1";
+
+if (localStorage.getItem("cemCatalogVersion") !== catalogVersion) {
+
+    const existingNames = new Set(
+        products.map(function(product) {
+            return String(product.name || "").trim().toLowerCase();
+        })
+    );
+
+    startingProducts.forEach(function(product) {
+
+        if (!existingNames.has(product.name.toLowerCase())) {
+            products.push({ ...product });
+            existingNames.add(product.name.toLowerCase());
+        }
+
+    });
+
+    localStorage.setItem("cemCatalogVersion", catalogVersion);
+}
+
+// SAVE PRODUCTS
+function saveProducts() {
+    localStorage.setItem("cemProducts", JSON.stringify(products));
+}
+
+saveProducts();
+
+
+
+// =================================
+// 3. DISPLAY PRODUCTS
+// =================================
+
+const productList = document.getElementById("productList");
+const productCounter = document.getElementById("productCounter");
+
+function renderProducts() {
+
+    productList.replaceChildren();
+
+    productCounter.textContent =
+        products.length + (products.length === 1 ? " product" : " products");
+
+    if (products.length === 0) {
+
+        const message = document.createElement("p");
+        message.className = "empty-products";
+        message.textContent = "No products available. Add your first product above.";
+
+        productList.appendChild(message);
+        return;
+    }
+
+    products.forEach(function(product) {
+
+        const card = document.createElement("article");
+        card.className = "admin-product-card";
+
+        const image = document.createElement("img");
+
+        image.src = product.image
+    ? new URL("../" + product.image, location.href).href
+    : "";
+
+        image.alt = product.name;
+
+        image.onerror = function() {
+            this.style.visibility = "hidden";
+        };
+
+        const info = document.createElement("div");
+        info.className = "admin-product-info";
+
+        const name = document.createElement("h3");
+        name.textContent = product.name;
+
+        const category = document.createElement("p");
+        category.textContent = product.category;
+
+        const description = document.createElement("p");
+        description.textContent = product.description;
+
+        const price = document.createElement("div");
+        price.className = "admin-product-price";
+        price.textContent =
+    product.price === null || product.price === undefined
+        ? "Price to be confirmed"
+        : "₱" + Number(product.price).toLocaleString("en-PH");
+
+        const status = document.createElement("span");
+        status.className = "product-status " +
+            (product.available ? "status-available" : "status-soldout");
+
+        status.textContent = product.available ? "Available" : "Sold Out";
+
+        const actions = document.createElement("div");
+        actions.className = "product-actions";
+
+        const editButton = document.createElement("button");
+        editButton.type = "button";
+        editButton.className = "edit-product";
+        editButton.textContent = "Edit";
+
+        editButton.addEventListener("click", function() {
+            editProduct(product.id);
+        });
+
+        const availabilityButton = document.createElement("button");
+        availabilityButton.type = "button";
+        availabilityButton.className = "availability-product";
+        availabilityButton.textContent = product.available
+            ? "Mark Sold Out"
+            : "Make Available";
+
+        availabilityButton.addEventListener("click", function() {
+            toggleAvailability(product.id);
+        });
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "delete-product";
+        deleteButton.textContent = "Delete";
+
+        deleteButton.addEventListener("click", function() {
+            deleteProduct(product.id);
+        });
+
+        actions.append(editButton, availabilityButton, deleteButton);
+
+        info.append(name, category, description, price, status, actions);
+
+        card.append(image, info);
+        productList.appendChild(card);
+    });
+}
+
+
+// =================================
+// 4. ADD OR UPDATE PRODUCT
+// =================================
+
+const productForm = document.getElementById("productForm");
+
+productForm.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const id = document.getElementById("productId").value;
+
+    const productData = {
+        name: document.getElementById("productName").value.trim(),
+        price: Number(document.getElementById("productPrice").value),
+        category: document.getElementById("productCategory").value,
+        image: document.getElementById("productImage").value.trim(),
+        description: document.getElementById("productDescription").value.trim()
+    };
+
+    if (!productData.name ||
+        !productData.category ||
+        !productData.description ||
+        !Number.isFinite(productData.price) ||
+        productData.price <= 0) {
+
+        alert("Please enter valid product information.");
+        return;
+    }
+
+    if (id) {
+
+        const index = products.findIndex(function(product) {
+            return product.id === Number(id);
+        });
+
+        if (index !== -1) {
+            products[index] = {
+                ...products[index],
+                ...productData
+            };
+        }
+
+        alert("Product updated successfully!");
+
+    } else {
+
+        const newProduct = {
+            id: Date.now(),
+            ...productData,
+            available: true
+        };
+
+        products.push(newProduct);
+
+        alert("New product added successfully!");
+    }
+
+    saveProducts();
+    renderProducts();
+    resetForm();
+
+});
+
+
+// =================================
+// 5. EDIT PRODUCT
+// =================================
+
+function editProduct(id) {
+
+    const product = products.find(function(item) {
+        return item.id === id;
+    });
+
+    if (!product) return;
+
+    document.getElementById("productId").value = product.id;
+    document.getElementById("productName").value = product.name;
+    document.getElementById("productPrice").value = product.price;
+    document.getElementById("productCategory").value = product.category;
+    document.getElementById("productImage").value = product.image;
+    document.getElementById("productDescription").value = product.description;
+
+    document.getElementById("formTitle").textContent = "Edit Product";
+
+    document.getElementById("saveProductBtn").textContent =
+        "Update Product";
+
+    document.getElementById("cancelEditBtn").hidden = false;
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+
+// =================================
+// 6. DELETE PRODUCT
+// =================================
+
+function deleteProduct(id) {
+
+    const product = products.find(function(item) {
+        return item.id === id;
+    });
+
+    if (!product) return;
+
+    const confirmDelete = confirm(
+        "Are you sure you want to delete " + product.name + "?"
+    );
+
+    if (!confirmDelete) return;
+
+    products = products.filter(function(item) {
+        return item.id !== id;
+    });
+
+    saveProducts();
+    renderProducts();
+    resetForm();
+}
+
+
+// =================================
+// 7. UPDATE AVAILABILITY
+// =================================
+
+function toggleAvailability(id) {
+
+    const product = products.find(function(item) {
+        return item.id === id;
+    });
+
+    if (!product) return;
+
+    product.available = !product.available;
+
+    saveProducts();
+    renderProducts();
+}
+
+
+// =================================
+// 8. RESET FORM
+// =================================
+
+function resetForm() {
+
+    productForm.reset();
+
+    document.getElementById("productId").value = "";
+
+    document.getElementById("formTitle").textContent =
+        "+ Add New Product";
+
+    document.getElementById("saveProductBtn").textContent =
+        "Save Product";
+
+    document.getElementById("cancelEditBtn").hidden = true;
+}
+
+document.getElementById("cancelEditBtn").addEventListener(
+    "click",
+    resetForm
+);
+
+
+// INITIAL DISPLAY
+renderProducts();
+
+</script>
+
+</body>
+</html>

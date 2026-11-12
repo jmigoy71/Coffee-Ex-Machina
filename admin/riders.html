@@ -1,0 +1,967 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rider Management | Coffee Ex Machina</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Georgia, serif;
+            background: #17100d;
+            color: #f3e5ce;
+            padding: 30px;
+        }
+
+        .page-container {
+            max-width: 1250px;
+            margin: auto;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .brand {
+            color: #dbb875;
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .navigation a {
+            color: #e5d2b5;
+            text-decoration: none;
+            border: 1px solid #705536;
+            padding: 10px 15px;
+            border-radius: 7px;
+        }
+
+        .navigation a:hover,
+        .navigation a.active {
+            background: #d8b777;
+            color: #1c130e;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading p {
+            color: #b9a993;
+            margin-top: 8px;
+        }
+
+        h1, h2, h3 {
+            color: #dbb875;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: #291d17;
+            border: 1px solid #59442f;
+            border-radius: 12px;
+            padding: 22px;
+        }
+
+        .stat-card p {
+            color: #b9a993;
+            margin-bottom: 12px;
+        }
+
+        .stat-card strong {
+            font-size: 27px;
+            color: #e1c083;
+        }
+
+        .panel {
+            background: #251914;
+            border: 1px solid #59442f;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .panel-description {
+            color: #b9a993;
+            margin: 8px 0 20px;
+        }
+
+        .rider-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            color: #e4c58e;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: #17100d;
+            border: 1px solid #705536;
+            border-radius: 7px;
+            color: #fff0dc;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        input:focus, select:focus {
+            outline: 1px solid #dbb875;
+        }
+
+        button, select {
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        select {
+            background: #17100d;
+            color: #f3e5ce;
+            border: 1px solid #705536;
+            border-radius: 7px;
+            padding: 11px;
+        }
+
+        .primary-btn {
+            background: #dbb875;
+            color: #1c130e;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 7px;
+            font-weight: bold;
+        }
+
+        .primary-btn:hover {
+            background: #edce91;
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: #dbb875;
+            border: 1px solid #dbb875;
+            padding: 10px 14px;
+            border-radius: 7px;
+        }
+
+        .danger-btn {
+            background: transparent;
+            border: 1px solid #b65d4e;
+            color: #e99586;
+            padding: 9px 13px;
+            border-radius: 7px;
+        }
+
+        .form-submit {
+            align-self: end;
+        }
+
+        .rider-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .rider-card, .order-card {
+            background: #17100d;
+            border: 1px solid #59442f;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 17px;
+            flex-wrap: wrap;
+        }
+
+        .rider-details p, .order-details p {
+            color: #c7b69f;
+            margin: 9px 0;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .available {
+            background: #234a35;
+            color: #a9e0ba;
+        }
+
+        .unavailable {
+            background: #58372d;
+            color: #f0b09d;
+        }
+
+        .order-status {
+            background: #59421f;
+            color: #f1cd89;
+        }
+
+        .delivery-status {
+            background: #24445c;
+            color: #b4d9f2;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
+        .assign-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
+        .assign-row select {
+            flex: 1;
+            min-width: 170px;
+        }
+
+        .empty-state {
+            color: #b9a993;
+            text-align: center;
+            padding: 25px 10px;
+            border: 1px dashed #705536;
+            border-radius: 8px;
+        }
+
+        .section-title {
+            margin-bottom: 18px;
+        }
+
+        .order-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .notice {
+            color: #cbb796;
+            background: #302116;
+            border-left: 3px solid #dbb875;
+            padding: 12px 15px;
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 800px) {
+            body {
+                padding: 17px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .rider-grid, .order-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .rider-form {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page-container">
+
+    <!-- TOP NAVIGATION -->
+    <header class="top-bar">
+        <div class="brand">☕ COFFEE EX MACHINA</div>
+
+        <nav class="navigation">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="products.html">Menu</a>
+            <a href="orders.html">Orders</a>
+            <a href="riders.html" class="active">Riders</a>
+        </nav>
+    </header>
+
+    <!-- PAGE HEADING -->
+    <section class="page-heading">
+        <h1>Rider Management</h1>
+        <p>Manage your in-house delivery riders and customer deliveries.</p>
+    </section>
+
+    <!-- STATISTICS -->
+    <section class="stats">
+        <div class="stat-card">
+            <p>Total Riders</p>
+            <strong id="totalRiders">0</strong>
+        </div>
+
+        <div class="stat-card">
+            <p>Available Riders</p>
+            <strong id="availableRiders">0</strong>
+        </div>
+
+        <div class="stat-card">
+            <p>Ready for Pickup</p>
+            <strong id="readyOrders">0</strong>
+        </div>
+
+        <div class="stat-card">
+            <p>Active Deliveries</p>
+            <strong id="activeDeliveries">0</strong>
+        </div>
+    </section>
+
+    <!-- ADD RIDER -->
+    <section class="panel">
+        <h2>Register New Rider</h2>
+
+        <p class="panel-description">
+            Add an in-house delivery rider to your Coffee Ex Machina team.
+        </p>
+
+        <form id="riderForm" class="rider-form">
+
+            <div class="form-group">
+                <label for="riderName">Rider Full Name</label>
+                <input type="text" id="riderName"
+                    placeholder="Enter rider name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="riderPhone">Contact Number</label>
+                <input type="tel" id="riderPhone"
+                    placeholder="Enter contact number" required>
+            </div>
+
+            <div class="form-group">
+                <label for="riderVehicle">Vehicle Type</label>
+                <input type="text" id="riderVehicle"
+                    placeholder="e.g. Motorcycle" required>
+            </div>
+
+            <div class="form-group">
+                <label for="riderPlate">Plate Number</label>
+                <input type="text" id="riderPlate"
+                    placeholder="Enter plate number">
+            </div>
+
+            <div class="form-group form-submit">
+                <button type="submit" class="primary-btn">
+                    + Register Rider
+                </button>
+            </div>
+
+        </form>
+    </section>
+
+    <!-- RIDER LIST -->
+    <section class="panel">
+        <h2 class="section-title">Our Delivery Riders</h2>
+        <div id="riderList" class="rider-grid"></div>
+    </section>
+
+    <!-- READY ORDERS -->
+    <section class="panel">
+        <h2 class="section-title">Orders Ready for Pickup</h2>
+
+        <p class="panel-description">
+            Assign an available in-house rider to a prepared customer order.
+        </p>
+
+        <div id="readyOrderList" class="order-grid"></div>
+
+        <div class="notice">
+            Assigning a rider will change the order status to
+            <strong>Out for Delivery</strong> in this demonstration system.
+        </div>
+    </section>
+
+    <!-- ACTIVE DELIVERIES -->
+    <section class="panel">
+        <h2 class="section-title">Active Deliveries</h2>
+
+        <p class="panel-description">
+            Monitor orders currently assigned to your delivery riders.
+        </p>
+
+        <div id="activeOrderList" class="order-grid"></div>
+    </section>
+
+</div>
+
+<script>
+    // LOCAL STORAGE KEYS
+    const RIDERS_KEY = "cemRiders";
+    const ORDERS_KEY = "cemOrders";
+    const LATEST_ORDER_KEY = "cemLatestOrder";
+
+    // READ SAVED DATA
+    function readData(key) {
+        try {
+            const data = JSON.parse(localStorage.getItem(key) || "[]");
+            return Array.isArray(data) ? data : [];
+        } catch (error) {
+            console.error("Could not read saved data:", error);
+            return [];
+        }
+    }
+
+    // GET RIDERS AND ORDERS
+    function getRiders() {
+        return readData(RIDERS_KEY);
+    }
+
+    function getOrders() {
+        return readData(ORDERS_KEY);
+    }
+
+    // SAVE BOTH LISTS
+    function saveRiders(riders) {
+        localStorage.setItem(RIDERS_KEY, JSON.stringify(riders));
+    }
+
+    function saveOrders(orders) {
+        localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+    }
+
+    // UPDATE CUSTOMER'S LATEST ORDER
+    function updateLatestOrder(order) {
+        try {
+            const latest = JSON.parse(
+                localStorage.getItem(LATEST_ORDER_KEY) || "null"
+            );
+
+            if (latest && latest.reference === order.reference) {
+                localStorage.setItem(
+                    LATEST_ORDER_KEY,
+                    JSON.stringify(order)
+                );
+            }
+        } catch (error) {
+            console.error("Could not update latest order:", error);
+        }
+    }
+
+    // SAFE TEXT FOR HTML
+    function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, function (char) {
+            return {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+            }[char];
+        });
+    }
+
+    // FORMAT MONEY
+    function money(value) {
+        return "₱" + Number(value || 0).toLocaleString("en-PH", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    // CHECK WHETHER RIDER HAS ACTIVE DELIVERY
+    function hasActiveDelivery(riderId, orders) {
+        return orders.some(order =>
+            order.riderId === riderId &&
+            order.status === "Out for Delivery"
+        );
+    }
+
+    // UPDATE STATISTICS
+    function renderStatistics() {
+        const riders = getRiders();
+        const orders = getOrders();
+
+        document.getElementById("totalRiders").textContent =
+            riders.length;
+
+        document.getElementById("availableRiders").textContent =
+            riders.filter(rider => rider.available === true).length;
+
+        document.getElementById("readyOrders").textContent =
+            orders.filter(order =>
+                order.status === "Ready for Pickup"
+            ).length;
+
+        document.getElementById("activeDeliveries").textContent =
+            orders.filter(order =>
+                order.status === "Out for Delivery"
+            ).length;
+    }
+
+    // RENDER RIDERS
+    function renderRiders() {
+        const riders = getRiders();
+        const orders = getOrders();
+        const riderList = document.getElementById("riderList");
+
+        if (riders.length === 0) {
+            riderList.innerHTML = `
+                <div class="empty-state">
+                    No riders registered yet.
+                    Add your first delivery rider above.
+                </div>
+            `;
+            return;
+        }
+
+        riderList.innerHTML = riders.map(rider => {
+            const busy = hasActiveDelivery(rider.id, orders);
+
+            const available = rider.available === true && !busy;
+
+            return `
+                <article class="rider-card">
+
+                    <div class="card-top">
+                        <h3>${escapeHTML(rider.name)}</h3>
+
+                        <span class="status ${available ? "available" : "unavailable"}">
+                            ${available ? "Available" : "Unavailable / On Delivery"}
+                        </span>
+                    </div>
+
+                    <div class="rider-details">
+                        <p><strong>Rider ID:</strong>
+                            ${escapeHTML(rider.id)}</p>
+
+                        <p><strong>Contact:</strong>
+                            ${escapeHTML(rider.phone)}</p>
+
+                        <p><strong>Vehicle:</strong>
+                            ${escapeHTML(rider.vehicle)}</p>
+
+                        <p><strong>Plate Number:</strong>
+                            ${escapeHTML(rider.plate || "Not provided")}</p>
+                    </div>
+
+                    <div class="card-actions">
+
+                        <button
+                            class="secondary-btn"
+                            data-action="toggle-rider"
+                            data-id="${escapeHTML(rider.id)}"
+                            ${busy ? "disabled title='Rider has an active delivery'" : ""}>
+                            ${available ? "Set Unavailable" : "Set Available"}
+                        </button>
+
+                        <button
+                            class="danger-btn"
+                            data-action="delete-rider"
+                            data-id="${escapeHTML(rider.id)}"
+                            ${busy ? "disabled title='Rider has an active delivery'" : ""}>
+                            Remove Rider
+                        </button>
+
+                    </div>
+
+                </article>
+            `;
+        }).join("");
+    }
+
+    // ORDER ITEM SUMMARY
+    function getItemSummary(order) {
+        if (!Array.isArray(order.items)) {
+            return "Order items unavailable";
+        }
+
+        return order.items.map(item =>
+            `${escapeHTML(item.name)} × ${Number(item.quantity || 1)}`
+        ).join(", ");
+    }
+
+    // RENDER ORDERS WAITING FOR RIDERS
+    function renderReadyOrders() {
+        const orders = getOrders();
+
+        const readyOrders = orders.filter(order =>
+            order.status === "Ready for Pickup"
+        );
+
+        const riders = getRiders();
+
+        const availableRiders = riders.filter(rider =>
+            rider.available === true &&
+            !hasActiveDelivery(rider.id, orders)
+        );
+
+        const container = document.getElementById("readyOrderList");
+
+        if (readyOrders.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    No orders are currently waiting for pickup.
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = readyOrders.map(order => `
+            <article class="order-card">
+
+                <div class="card-top">
+                    <h3>${escapeHTML(order.reference)}</h3>
+                    <span class="status order-status">
+                        Ready for Pickup
+                    </span>
+                </div>
+
+                <div class="order-details">
+                    <p><strong>Customer:</strong>
+                        ${escapeHTML(order.customerName)}</p>
+
+                    <p><strong>Phone:</strong>
+                        ${escapeHTML(order.customerPhone)}</p>
+
+                    <p><strong>Address:</strong>
+                        ${escapeHTML(order.deliveryAddress)}</p>
+
+                    <p><strong>Items:</strong>
+                        ${getItemSummary(order)}</p>
+
+                    <p><strong>Subtotal:</strong>
+                        ${money(order.subtotal)}</p>
+                </div>
+
+                <div class="assign-row">
+
+                    <select id="rider-select-${escapeHTML(order.reference)}">
+                        <option value="">Select Available Rider</option>
+
+                        ${availableRiders.map(rider => `
+                            <option value="${escapeHTML(rider.id)}">
+                                ${escapeHTML(rider.name)}
+                            </option>
+                        `).join("")}
+
+                    </select>
+
+                    <button
+                        class="primary-btn"
+                        data-action="assign-rider"
+                        data-order="${escapeHTML(order.reference)}"
+                        ${availableRiders.length === 0 ? "disabled" : ""}>
+                        Assign Rider
+                    </button>
+
+                </div>
+
+                ${availableRiders.length === 0 ? `
+                    <p style="color:#e99586; margin-top:12px;">
+                        No available riders. Register a rider or mark one available.
+                    </p>
+                ` : ""}
+
+            </article>
+        `).join("");
+    }
+
+    // RENDER ACTIVE DELIVERIES
+    function renderActiveDeliveries() {
+        const orders = getOrders();
+
+        const activeOrders = orders.filter(order =>
+            order.status === "Out for Delivery"
+        );
+
+        const container = document.getElementById("activeOrderList");
+
+        if (activeOrders.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    There are no active deliveries right now.
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = activeOrders.map(order => `
+            <article class="order-card">
+
+                <div class="card-top">
+                    <h3>${escapeHTML(order.reference)}</h3>
+
+                    <span class="status delivery-status">
+                        Out for Delivery
+                    </span>
+                </div>
+
+                <div class="order-details">
+                    <p><strong>Customer:</strong>
+                        ${escapeHTML(order.customerName)}</p>
+
+                    <p><strong>Delivery Address:</strong>
+                        ${escapeHTML(order.deliveryAddress)}</p>
+
+                    <p><strong>Assigned Rider:</strong>
+                        ${escapeHTML(order.riderName || "Not recorded")}</p>
+
+                    <p><strong>Rider Contact:</strong>
+                        ${escapeHTML(order.riderPhone || "Not recorded")}</p>
+
+                    <p><strong>Items:</strong>
+                        ${getItemSummary(order)}</p>
+
+                    <p><strong>Subtotal:</strong>
+                        ${money(order.subtotal)}</p>
+                </div>
+
+                <div class="card-actions">
+                    <button
+                        class="primary-btn"
+                        data-action="mark-delivered"
+                        data-order="${escapeHTML(order.reference)}">
+                        Mark as Delivered
+                    </button>
+                </div>
+
+            </article>
+        `).join("");
+    }
+
+    // REFRESH THE WHOLE PAGE
+    function renderAll() {
+        renderStatistics();
+        renderRiders();
+        renderReadyOrders();
+        renderActiveDeliveries();
+    }
+
+    // REGISTER A RIDER
+    document.getElementById("riderForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById("riderName").value.trim();
+        const phone = document.getElementById("riderPhone").value.trim();
+        const vehicle = document.getElementById("riderVehicle").value.trim();
+        const plate = document.getElementById("riderPlate").value.trim();
+
+        if (!name || !phone || !vehicle) {
+            alert("Please complete the required rider information.");
+            return;
+        }
+
+        const riders = getRiders();
+
+        const newRider = {
+            id: "CEMR-" + Date.now(),
+            name: name,
+            phone: phone,
+            vehicle: vehicle,
+            plate: plate,
+            available: true,
+            createdAt: new Date().toISOString()
+        };
+
+        riders.push(newRider);
+        saveRiders(riders);
+
+        this.reset();
+
+        alert("Rider registered successfully!");
+
+        renderAll();
+    });
+
+    // HANDLE RIDER AND ORDER ACTIONS
+    document.addEventListener("click", function(event) {
+        const button = event.target.closest("button[data-action]");
+
+        if (!button) return;
+
+        const action = button.dataset.action;
+        const riderId = button.dataset.id;
+        const orderReference = button.dataset.order;
+
+        // TOGGLE RIDER AVAILABILITY
+        if (action === "toggle-rider") {
+            const riders = getRiders();
+            const orders = getOrders();
+
+            const rider = riders.find(item => item.id === riderId);
+
+            if (!rider) return;
+
+            if (hasActiveDelivery(riderId, orders)) {
+                alert("This rider has an active delivery.");
+                return;
+            }
+
+            rider.available = !rider.available;
+
+            saveRiders(riders);
+            renderAll();
+        }
+
+        // REMOVE RIDER
+        if (action === "delete-rider") {
+            const riders = getRiders();
+            const orders = getOrders();
+
+            if (hasActiveDelivery(riderId, orders)) {
+                alert("This rider has an active delivery and cannot be removed.");
+                return;
+            }
+
+            if (!confirm("Are you sure you want to remove this rider?")) {
+                return;
+            }
+
+            saveRiders(riders.filter(item => item.id !== riderId));
+
+            renderAll();
+        }
+
+        // ASSIGN RIDER TO AN ORDER
+        if (action === "assign-rider") {
+            const riders = getRiders();
+            const orders = getOrders();
+
+            const order = orders.find(item =>
+                item.reference === orderReference
+            );
+
+            const select = document.getElementById(
+                "rider-select-" + orderReference
+            );
+
+            if (!order || !select) return;
+
+            const selectedRider = riders.find(rider =>
+                rider.id === select.value
+            );
+
+            if (!selectedRider) {
+                alert("Please select an available rider.");
+                return;
+            }
+
+            if (
+                order.status !== "Ready for Pickup" ||
+                selectedRider.available !== true ||
+                hasActiveDelivery(selectedRider.id, orders)
+            ) {
+                alert("This order or rider is no longer available. Please refresh.");
+                renderAll();
+                return;
+            }
+
+            order.riderId = selectedRider.id;
+            order.riderName = selectedRider.name;
+            order.riderPhone = selectedRider.phone;
+            order.assignedAt = new Date().toISOString();
+            order.status = "Out for Delivery";
+
+            selectedRider.available = false;
+
+            saveOrders(orders);
+            saveRiders(riders);
+            updateLatestOrder(order);
+
+            alert("Rider assigned successfully! The order is now Out for Delivery.");
+
+            renderAll();
+        }
+
+        // MARK AN ORDER AS DELIVERED
+        if (action === "mark-delivered") {
+            const orders = getOrders();
+            const riders = getRiders();
+
+            const order = orders.find(item =>
+                item.reference === orderReference
+            );
+
+            if (!order || order.status !== "Out for Delivery") {
+                alert("This order is no longer an active delivery.");
+                renderAll();
+                return;
+            }
+
+            if (!confirm("Confirm that this order has been delivered?")) {
+                return;
+            }
+
+            order.status = "Delivered";
+            order.deliveredAt = new Date().toISOString();
+
+            const rider = riders.find(item =>
+                item.id === order.riderId
+            );
+
+            if (rider) {
+                rider.available = true;
+            }
+
+            saveOrders(orders);
+            saveRiders(riders);
+            updateLatestOrder(order);
+
+            alert("Order marked as delivered!");
+
+            renderAll();
+        }
+    });
+
+    // INITIAL PAGE LOAD
+    renderAll();
+
+</script>
+
+</body>
+</html>

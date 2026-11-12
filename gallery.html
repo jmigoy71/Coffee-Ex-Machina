@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gallery | Coffee Ex Machina</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+
+            <a href="index.html" class="logo">
+                COFFEE <span>EX MACHINA</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="gallery.html" class="active">Gallery</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+
+        </nav>
+    </header>
+
+    <main>
+
+        <section class="page-hero">
+            <p class="subtitle">A GLIMPSE OF OUR CAFE</p>
+            <h1>OUR GALLERY</h1>
+            <p>Good coffee, great atmosphere, and memorable moments.</p>
+        </section>
+
+        <section class="gallery-intro">
+            <h2>Experience Coffee Ex Machina</h2>
+            <p>
+                Take a look at our coffee shop, menu, and
+                the atmosphere that makes every visit special.
+            </p>
+        </section>
+
+        <section class="gallery-grid">
+
+            <div class="gallery-card">
+                <img src="images/cafe-exterior.jpg" alt="Coffee Ex Machina exterior" onclick="openImage(this)">
+                <div class="gallery-caption">
+                    <h3>Our Coffee Shop</h3>
+                    <p>Discover our local coffee spot.</p>
+                </div>
+            </div>
+
+            <div class="gallery-card">
+                <img src="images/cafe-interior.jpg" alt="Coffee Ex Machina counter and interior"
+                    onclick="openImage(this)">
+                <div class="gallery-caption">
+                    <h3>Our Cafe Atmosphere</h3>
+                    <p>A welcoming place to enjoy your coffee.</p>
+                </div>
+            </div>
+
+            <div class="gallery-card">
+                <img src="images/menu-board.jpg" alt="Coffee Ex Machina menu board" onclick="openImage(this)">
+                <div class="gallery-caption">
+                    <h3>Our Menu</h3>
+                    <p>Explore our drinks and snacks.</p>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="menu-cta">
+            <h2>Come and Visit Us!</h2>
+            <p>Your next coffee experience is waiting.</p>
+
+            <a href="contact.html" class="btn btn-primary">
+                Find Our Cafe
+            </a>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <h3>COFFEE EX MACHINA</h3>
+        <p>More Than Coffee. It's an Experience.</p>
+        <p>&copy; 2026 Coffee Ex Machina. All Rights Reserved.</p>
+    </footer>
+    <!-- Image Preview -->
+    <div id="imageLightbox" class="lightbox" onclick="closeImage()">
+
+        <button class="lightbox-close" onclick="closeImage()">
+            &times;
+        </button>
+
+        <img id="lightboxImage" class="lightbox-content" alt="Expanded gallery photo" onclick="event.stopPropagation()">
+
+    </div>
+
+    <script>
+        function openImage(image) {
+            document.getElementById("imageLightbox").style.display = "flex";
+            document.getElementById("lightboxImage").src = image.src;
+        }
+
+        function closeImage() {
+            document.getElementById("imageLightbox").style.display = "none";
+        }
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                closeImage();
+            }
+        });
+    </script>
+
+</body>
+
+</html>

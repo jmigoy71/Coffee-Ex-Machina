@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation | Coffee Ex Machina</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- COPY YOUR EXISTING HEADER FROM index.html HERE -->
+
+    <main class="confirmation-page">
+
+        <section class="confirmation-card">
+
+            <div class="success-icon">✓</div>
+
+            <p class="subtitle">COFFEE EX MACHINA DELIVERY</p>
+
+            <h1>Order Received!</h1>
+
+            <p class="confirmation-message">
+                Thank you for ordering with us!
+                Your order has been received and is waiting for confirmation.
+            </p>
+
+            <div class="order-reference">
+                <span>YOUR ORDER REFERENCE</span>
+                <h2 id="orderReference">CEM-0000</h2>
+            </div>
+
+            
+<div class="order-status">
+    <h2>Order Status</h2>
+
+    <p id="currentOrderStatus">
+        Current Status: Order Received
+    </p>
+
+    <div class="status-step" data-status="Order Received">
+        <span>01</span>
+        <div>
+            <strong>Order Received</strong>
+            <p>Your order has been submitted.</p>
+        </div>
+    </div>
+
+    <div class="status-step" data-status="Confirmed">
+        <span>02</span>
+        <div>
+            <strong>Order Confirmed</strong>
+            <p>The café has confirmed your order.</p>
+        </div>
+    </div>
+
+    <div class="status-step" data-status="Preparing">
+        <span>03</span>
+        <div>
+            <strong>Preparing Your Order</strong>
+            <p>The café is preparing your items.</p>
+        </div>
+    </div>
+
+    <div class="status-step" data-status="Ready for Pickup">
+        <span>04</span>
+        <div>
+            <strong>Ready for Pickup</strong>
+            <p>Your order is ready for the delivery rider.</p>
+        </div>
+    </div>
+
+    <div class="status-step" data-status="Out for Delivery">
+        <span>05</span>
+        <div>
+            <strong>Out for Delivery</strong>
+            <p>Your order is on its way!</p>
+        </div>
+    </div>
+
+    <div class="status-step" data-status="Delivered">
+        <span>06</span>
+        <div>
+            <strong>Delivered</strong>
+            <p>Your order has arrived. Enjoy!</p>
+        </div>
+    </div>
+</div>
+
+
+            <div class="confirmation-summary">
+                <h2>Order Summary</h2>
+
+                <div id="confirmationItems"></div>
+
+                <div class="confirmation-total">
+                    <span>Subtotal</span>
+                    <strong id="confirmationSubtotal">₱0.00</strong>
+                </div>
+
+                <p id="confirmationPayment">
+                    Payment method: Not available
+                </p>
+            </div>
+
+            <a href="menu.html" class="back-menu-btn">
+                Continue Shopping
+            </a>
+
+        </section>
+
+    </main>
+
+    <!-- COPY YOUR EXISTING FOOTER FROM index.html HERE -->
+
+    <script>
+        const savedOrder = localStorage.getItem("cemLatestOrder");
+
+        if (savedOrder) {
+
+            const order = JSON.parse(savedOrder);
+
+            document.getElementById("orderReference").textContent =
+                order.reference;
+
+            document.getElementById("confirmationSubtotal").textContent =
+                "₱" + order.subtotal.toLocaleString("en-PH", {
+                    minimumFractionDigits: 2
+                });
+
+            document.getElementById("confirmationPayment").textContent =
+                "Payment method: " + order.paymentMethod;
+
+            const itemsContainer =
+                document.getElementById("confirmationItems");
+
+            order.items.forEach(function(item) {
+
+                const row = document.createElement("div");
+                row.className = "confirmation-item";
+
+                const name = document.createElement("span");
+                name.textContent = item.name + " × " + item.quantity;
+
+                const price = document.createElement("strong");
+                price.textContent = "₱" +
+                    (item.price * item.quantity).toLocaleString("en-PH");
+
+                row.append(name, price);
+                itemsContainer.appendChild(row);
+
+            });
+
+        } else {
+
+            document.getElementById("confirmationMessage").textContent =
+                "No recent order was found. You can return to our menu to place an order.";
+
+        }
+    </script>
+
+
+
+
+<script>
+(function () {
+
+    // Order status progression
+    const statusSteps = [
+        "Order Received",
+        "Confirmed",
+        "Preparing",
+        "Ready for Pickup",
+        "Out for Delivery",
+        "Delivered"
+    ];
+
+    // Find the latest order using its reference number
+    function getCurrentOrder() {
+        try {
+            const latestOrder = JSON.parse(
+                localStorage.getItem("cemLatestOrder") || "null"
+            );
+
+            if (!latestOrder) return null;
+
+            const orders = JSON.parse(
+                localStorage.getItem("cemOrders") || "[]"
+            );
+
+            if (Array.isArray(orders)) {
+                const matchingOrder = orders.find(
+                    item => item.reference === latestOrder.reference
+                );
+
+                if (matchingOrder) return matchingOrder;
+            }
+
+            return latestOrder;
+
+        } catch (error) {
+            console.error("Error loading order:", error);
+            return null;
+        }
+    }
+
+    // Update the customer's tracking timeline
+    function updateOrderTracking() {
+        const order = getCurrentOrder();
+
+        if (!order) return;
+
+        const currentStatus = order.status || "Order Received";
+
+        const statusDisplay = document.getElementById(
+            "currentOrderStatus"
+        );
+
+        if (statusDisplay) {
+            statusDisplay.textContent =
+                "Current Status: " + currentStatus;
+        }
+
+        const currentIndex = statusSteps.indexOf(currentStatus);
+
+        document.querySelectorAll(".status-step[data-status]")
+            .forEach(function (step) {
+
+                const stepIndex = statusSteps.indexOf(
+                    step.dataset.status
+                );
+
+                step.classList.toggle(
+                    "active",
+                    currentIndex >= 0 && stepIndex <= currentIndex
+                );
+
+                step.classList.toggle(
+                    "current",
+                    stepIndex === currentIndex
+                );
+            });
+    }
+
+    // Initial update
+    updateOrderTracking();
+
+    // Check for updates every 2 seconds
+    setInterval(updateOrderTracking, 2000);
+
+    // Also update when another tab changes localStorage
+    window.addEventListener("storage", updateOrderTracking);
+
+})();
+</script>
+
+
+</body>
+</html>
