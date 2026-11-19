@@ -2497,3 +2497,521 @@ background-position: center;
     transform: none;
     box-shadow: inset 0 0 12px rgba(214, 183, 122, 0.04);
 }
+
+
+/* =================================
+   COFFEE EX MACHINA HEADER
+================================= */
+
+body {
+    margin: 0;
+    background-color: #171513;
+    color: #F2E8D8;
+}
+
+/* HEADER CONTAINER */
+.header {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* NAVIGATION BAR */
+.header .navbar {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 18px 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    box-sizing: border-box;
+}
+
+/* LOGO */
+.header .navbar .logo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    margin: 0;
+    padding: 0;
+    flex: 0 0 auto;
+
+    color: var(--gold);
+    text-decoration: none;
+}
+
+.header .navbar .logo img {
+    display: block;
+    width: 85px;
+    height: 85px;
+    object-fit: contain;
+}
+
+/* NAVIGATION LINKS */
+.header .navbar .nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 30px;
+
+    margin: 0 0 0 auto;
+    padding: 0;
+
+    list-style: none;
+}
+
+.header .navbar .nav-links a {
+    color: var(--cream);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.header .navbar .nav-links a:hover,
+.header .navbar .nav-links a.active {
+    color: var(--gold);
+}
+
+/* TRACK MY ORDER BUTTON */
+.track-order-btn {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 12px;
+    padding: 14px;
+
+    background: transparent;
+    color: var(--gold);
+
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+
+    transition: 0.3s ease;
+}
+
+.track-order-btn:hover {
+    background: var(--gold);
+    color: #171513;
+}
+/* CUSTOMER ORDER RECEIVED CONFIRMATION */
+
+.receipt-confirmation {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.received-toggle {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+}
+
+.order-received-btn {
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 15px 20px;
+    background: var(--gold);
+    color: #171513;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.order-received-btn:hover {
+    background: var(--cream);
+}
+
+.received-toggle:focus-visible + .order-received-btn {
+    outline: 3px solid white;
+    outline-offset: 3px;
+}
+
+.received-message {
+    display: none;
+    margin-top: 20px;
+    padding: 25px;
+    background: #241b16;
+    border: 1px solid var(--gold);
+    border-radius: 12px;
+}
+
+.received-icon {
+    width: 55px;
+    height: 55px;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    color: var(--gold);
+    font-size: 30px;
+}
+
+.received-message h3 {
+    color: var(--gold);
+    margin-bottom: 12px;
+}
+
+.received-message p {
+    color: var(--cream);
+    line-height: 1.7;
+}
+
+.received-toggle:checked + .order-received-btn {
+    display: none;
+}
+
+.received-toggle:checked ~ .received-message {
+    display: block;
+}
+
+/* =====================================
+   CUSTOMER ORDER RECEIVED BUTTON
+===================================== */
+
+.receipt-confirmation {
+    display: block !important;
+    width: 100%;
+    margin: 30px 0 15px;
+    text-align: center;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.receipt-confirmation .received-toggle {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.receipt-confirmation .order-received-btn {
+    display: flex !important;
+    width: 100%;
+    min-height: 55px;
+    box-sizing: border-box;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 16px 22px;
+
+    background: #D6B77A !important;
+    color: #171513 !important;
+
+    border: 2px solid #F0D49B !important;
+    border-radius: 9px;
+
+    font-size: 16px;
+    font-weight: 800;
+    text-align: center;
+    text-decoration: none;
+
+    cursor: pointer;
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    box-shadow: 0 5px 18px rgba(214, 183, 122, 0.25);
+    transition: all 0.3s ease;
+}
+
+.receipt-confirmation .order-received-btn:hover {
+    background: #F0D49B !important;
+    color: #171513 !important;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(214, 183, 122, 0.4);
+}
+
+.receipt-confirmation .received-toggle:focus-visible
++ .order-received-btn {
+    outline: 3px solid white;
+    outline-offset: 4px;
+}
+
+.receipt-confirmation .received-toggle:checked
++ .order-received-btn {
+    display: none !important;
+}
+
+/* THANK YOU MESSAGE */
+.receipt-confirmation .received-message {
+    display: none;
+    margin-top: 20px;
+    padding: 25px;
+    background: #241B16;
+    border: 1px solid #D6B77A;
+    border-radius: 12px;
+}
+
+.receipt-confirmation .received-toggle:checked
+~ .received-message {
+    display: block;
+}
+
+
+/* =====================================
+   ORDER COMPLETED PAGE
+===================================== */
+
+.order-completed-page {
+    min-height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 70px 20px;
+    box-sizing: border-box;
+}
+
+.order-completed-card {
+    width: 100%;
+    max-width: 650px;
+    box-sizing: border-box;
+    padding: 50px 35px;
+    text-align: center;
+
+    background: #241b16;
+    border: 1px solid var(--gold);
+    border-radius: 14px;
+
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.4);
+}
+
+.completed-icon {
+    width: 85px;
+    height: 85px;
+    margin: 0 auto 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--gold);
+    color: #171513;
+    border-radius: 50%;
+
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.order-completed-card .subtitle {
+    color: var(--gold);
+    letter-spacing: 3px;
+    font-size: 12px;
+    margin-bottom: 18px;
+}
+
+.order-completed-card h1 {
+    color: var(--cream);
+    font-size: clamp(28px, 5vw, 40px);
+    margin-bottom: 18px;
+}
+
+.completed-message {
+    color: #c5b8a5;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.completed-details {
+    padding: 25px;
+    margin-bottom: 30px;
+
+    background: #171310;
+    border: 1px solid rgba(214, 183, 122, 0.35);
+    border-radius: 9px;
+}
+
+.completed-details h2 {
+    color: var(--gold);
+    margin-bottom: 12px;
+}
+
+.completed-details p {
+    color: var(--cream);
+    line-height: 1.7;
+}
+
+.order-completed-card h3 {
+    color: var(--gold);
+    margin-bottom: 10px;
+}
+
+.completed-note {
+    color: #c5b8a5;
+    font-style: italic;
+}
+
+.completion-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.completion-btn,
+.completion-secondary-btn {
+    display: inline-block;
+    padding: 14px 25px;
+    border-radius: 7px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+
+.completion-btn {
+    background: var(--gold);
+    color: #171513;
+    border: 1px solid var(--gold);
+}
+
+.completion-btn:hover {
+    background: var(--cream);
+    border-color: var(--cream);
+}
+
+.completion-secondary-btn {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+}
+
+.completion-secondary-btn:hover {
+    background: var(--gold);
+    color: #171513;
+}
+
+@media (max-width: 480px) {
+    .order-completed-card {
+        padding: 35px 20px;
+    }
+
+    .completion-actions {
+        flex-direction: column;
+    }
+
+    .completion-actions a {
+        text-align: center;
+    }
+}
+
+/* =====================================
+   ORDER COMPLETED - VISIBLE BUTTONS
+===================================== */
+
+.order-completed-card .completion-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 35px;
+}
+
+/* BACK TO HOME BUTTON */
+.order-completed-card .completion-actions a.completion-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 160px;
+    padding: 16px 28px;
+
+    background-color: #D6B77A !important;
+    color: #171513 !important;
+
+    border: 2px solid #F0D49B !important;
+    border-radius: 8px;
+
+    font-size: 16px;
+    font-weight: 800;
+    text-decoration: none !important;
+    text-align: center;
+
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    box-shadow: 0 5px 18px rgba(214, 183, 122, 0.25);
+    transition: all 0.3s ease;
+}
+
+.order-completed-card .completion-actions a.completion-btn:hover {
+    background-color: #FFF0D2 !important;
+    color: #171513 !important;
+    transform: translateY(-3px);
+}
+
+/* ORDER AGAIN BUTTON */
+.order-completed-card .completion-actions a.completion-secondary-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 160px;
+    padding: 16px 28px;
+
+    background-color: transparent !important;
+    color: #E5C68E !important;
+
+    border: 2px solid #D6B77A !important;
+    border-radius: 8px;
+
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none !important;
+    text-align: center;
+
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.order-completed-card .completion-actions a.completion-secondary-btn:hover {
+    background-color: #D6B77A !important;
+    color: #171513 !important;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+    .order-completed-card .completion-actions {
+        flex-direction: column;
+    }
+
+    .order-completed-card .completion-actions a {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+/* =====================================
+   STICKY NAVIGATION BAR
+===================================== */
+
+.header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+
+    background-color: #171513;
+    border-bottom: 1px solid rgba(214, 183, 122, 0.3);
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+}
+
+/* KEEP NAVBAR CONTENT ALIGNED */
+.header .navbar {
+    width: 100%;
+    box-sizing: border-box;
+}
